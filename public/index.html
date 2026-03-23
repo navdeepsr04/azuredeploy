@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple App</title>
+</head>
+<body>
+
+  <h2>Add User</h2>
+
+  <input type="text" id="naam" placeholder="Name"><br><br>
+  <input type="email" id="email" placeholder="Email"><br><br>
+
+  <button onclick="addUser()">Submit</button>
+
+  <h2>Users</h2>
+  <button onclick="getUsers()">Load Users</button>
+
+  <ul id="userList"></ul>
+
+  <script>
+    async function addUser() {
+        const naam = document.getElementById("naam").value;
+        const email = document.getElementById("email").value;
+
+        console.log("Sending:", naam, email); // 🔍 DEBUG
+
+        const res = await fetch("/add-user", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ naam, email })
+        });
+
+        const data = await res.json();
+        alert(data.message);
+    }
+
+    async function getUsers() {
+      const res = await fetch("/users");
+      const users = await res.json();
+
+      const list = document.getElementById("userList");
+      list.innerHTML = "";
+
+      users.forEach(user => {
+        const li = document.createElement("li");
+        li.textContent = `${user.naam} - ${user.email}`;
+        list.appendChild(li);
+      });
+    }
+  </script>
+
+</body>
+</html>
