@@ -1,0 +1,53 @@
+
+Navdeep Rathore <navdeepsr11@gmail.com>
+Sun, Mar 15, 9:58 PM (9 days ago)
+to nsrexperimental
+
+connect to EC2
+
+update:
+sudo apt update
+sudo apt upgrade -y
+
+sudo apt install nodejs npm -y
+sudo apt install git -y
+
+sudo apt install nginx -y
+sudo systemctl start nginx
+
+git clone https://github.com/yourusername/project.git
+npm install inside cloned dir
+
+nano .env
+DB_HOST=tempdb.cfeekkcg84rs.ap-south-1.rds.amazonaws.com
+DB_USER=tempdb 
+DB_PASSWORD=temppassword 
+DB_NAME=mysql
+
+setup rds database and add things here
+
+node server.js 
+to start backend
+
+keep backend running:
+sudo npm install pm2 -g
+pm2 start server.js
+pm2 save
+pm2 startup
+
+configure nginx:
+sudo nano /etc/nginx/sites-available/default
+
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+    }
+}
+
+sudo systemctl restart nginx
+
+npm run build
+sudo cp -r build/* /var/www/html/
