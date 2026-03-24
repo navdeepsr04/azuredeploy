@@ -1,0 +1,36 @@
+import json
+import boto3
+
+runtime = boto3.client("sagemaker-runtime")
+
+ENDPOINT_NAME = "sagemaker-scikit-learn-2026-03-23-09-44-19-790"
+
+def lambda_handler(event, context):
+
+    try:
+        # Handle both API Gateway and Lambda test
+        if "body" in event:
+            body = json.loads(event["body"])
+        else:
+            body = event  # direct test input
+
+        value = body["value"]
+
+        response = runtime.invoke_endpoint(
+            EndpointName=ENDPOINT_NAME,
+            ContentType="application/json",
+            Body=json.dumps([[value]])
+        )
+
+        result = response["Body"].read().decode()
+
+        return {
+            "statusCode": 200,
+            "body": json.dumps({"prediction": result})
+        }
+
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "body": json.dumps({"error": str(e)})
+        }
