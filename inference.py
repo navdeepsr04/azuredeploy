@@ -15,3 +15,27 @@ def predict_fn(input_data, model):
 
 def output_fn(prediction, content_type):
     return json.dumps(prediction.tolist())
+
+
+
+# AmazonSageMakerServiceCatalogProductsUseRole
+# sagemaker-executionrole-xxxx
+
+
+# {
+#  "Version": "2012-10-17",
+#  "Statement": [
+#   {
+#    "Effect": "Allow",
+#    "Action": [
+#      "s3:GetObject",
+#      "s3:PutObject",
+#      "s3:ListBucket"
+#    ],
+#    "Resource": [
+#      "arn:aws:s3:::fatpractice2104",
+#      "arn:aws:s3:::fatpractice2104/*"
+#    ]
+#   }
+#  ]
+# }
